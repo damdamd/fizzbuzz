@@ -1,0 +1,73 @@
+#!/usr/bin/env php
+<?php
+
+handleHelp();
+
+checkInput();
+
+$to = getMaxValue();
+
+run($to, [
+    3 => 'Fizz',
+    5 => 'Buzz',
+]);
+
+function checkInput(): void
+{
+    if (!isset($_SERVER['argv'][1])) {
+        echo 'You must provide an argument' . PHP_EOL;
+        exit;
+    }
+    if ( 2 < $_SERVER['argc']) {
+        echo 'Too many arguments' . PHP_EOL;
+        exit;
+    }
+
+    $to = $_SERVER['argv'][1];
+
+    if (!ctype_digit($to)) {
+        echo 'Argument must be an integer' . PHP_EOL;
+        exit;
+    }
+}
+
+function getMaxValue(): int
+{
+    return intval($_SERVER['argv'][1]);
+}
+
+/**
+ * @param array<int,string> $dividers
+ */
+function run(int $to, array $dividers): void
+{
+    for ($i = 1; $i <= $to; $i++) {
+        $print = '';
+        foreach ($dividers as $divider => $value) {
+            if (0 === $i % $divider) {
+                $print .= $value;
+            }
+        }
+        if (empty($print)) {
+            $print = $i;
+        }
+        echo $print . PHP_EOL;
+    }
+}
+
+function handleHelp(): void
+{
+    if (in_array('-h', $_SERVER['argv'])) {
+        echo "Welcome on fizzbuzz" . PHP_EOL;
+        echo PHP_EOL;
+        echo "Usage: php bin/fizzbuzz MAX_LIMIT" . PHP_EOL;
+        echo PHP_EOL;
+        echo "Display numbers between **1** and **MAX_LIMIT** by following the rules:" . PHP_EOL;
+        echo "  - if number can be divided by 3: display Fizz" . PHP_EOL;
+        echo "  - if number can be divided by 5: display Buzz" . PHP_EOL;
+        echo "  - if number can be divided by 3 **AND** 5 : display FizzBuzz" . PHP_EOL;
+        echo "  - else display the number" . PHP_EOL;
+        exit;
+    }
+
+}

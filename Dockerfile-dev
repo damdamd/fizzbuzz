@@ -1,0 +1,2 @@
+FROM Dockerfile
+VOLUME . /usr/src/fizzbuzz
